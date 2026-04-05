@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root, .dark { /* Force le "Pure White" même si le thème sombre est appelé */
+    --background: 210 40% 98%; /* #f8fafc (Slate 50) - Fond SaaS */
+    --foreground: 215 28% 17%; /* Slate 800 (#1E293B) lisibilité maximale */
+    
+    --card: 0 0% 100%;
+    --card-foreground: 215 28% 17%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 28% 17%;
+    
+    --primary: 221.2 83.2% 53.3%; /* Bleu Azur Médical */
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 210 40% 98%;
+    --secondary-foreground: 215 28% 17%;
+    
+    --muted: 210 40% 98%; /* Ultra léger pour faire respirer */
+    --muted-foreground: 215.4 16.3% 36.9%;
+    
+    --accent: 210 40% 98%;
+    --accent-foreground: 215 28% 17%;
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 210 40% 96.1%; /* border-slate-100 / Extrêmement fin */
+    --input: 210 40% 96.1%;
+    --ring: 221.2 83.2% 53.3%;
+    
+    --radius: 0.75rem; /* Un radius plus doux */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    /* Nettoyage : interdiction des vieux fonds gris qui traînaient */
+    background-color: hsl(var(--background)) !important;
+  }
+}
+
+@layer utilities {
+  .shadow-premium {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.025);
+  }
+}

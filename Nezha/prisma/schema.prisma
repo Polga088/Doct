@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  DOCTOR
+  ASSISTANT
+}
+
+enum AppointmentStatus {
+  PROGRAMME        // Programmé
+  WAITING_ROOM     // En salle d'attente
+  IN_CONSULTATION  // En consultation
+  COMPLETED        // Terminé
+  CANCELED         // Annulé
+}
+
+enum PaymentMethod {
+  CASH             // Espèces
+  CARD             // Carte
+  CHECK            // Chèque
+  INSURANCE        // Tiers payant/Mutuelle
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  CANCELLED
+}
+
+enum DocumentType {
+  PRESCRIPTION     // Ordonnance
+  CERTIFICATE      // Certificat médical
+  EXTERNAL_RESULT  // Résultat externe
+}
+
+model User {
+  id            String        @id @default(uuid())
+  nom           String
+  email         String        @unique
+  password_hash String
+  role          Role          @default(ASSISTANT)
+  
+  appointmentsAsDoctor Appointment[]  @relation("DoctorAppointments")
+  
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model Patient {
+  id              String        @id @default(uuid())
+  nom             String
+  prenom          String
+  date_naissance  DateTime
+  tel             String?
+  email           String?
+  adresse         String?
+  allergies       String?       @db.Text
+  antecedents     String?       @db.Text
+  groupe_sanguin  String?
+  
+  appointments    Appointment[]
+  
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model Appointment {
+  id            String            @id @default(uuid())
+  date_heure    DateTime
+  motif         String
+  statut        AppointmentStatus @default(PROGRAMME)
+  
+  doctor_id     String
+  doctor        User              @relation("DoctorAppointments", fields: [doctor_id], references: [id])
+  patient_id    String
+  patient       Patient           @relation(fields: [patient_id], references: [id])
+  
+  consultation  ConsultationRecord?
+  documents     Document[]
+  invoice       Invoice?
+  
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+}
+
+model ConsultationRecord {
+  id             String        @id @default(uuid())
+  notes_medecin  String?       @db.Text
+  diagnostic     String?       @db.Text
+  
+  appointment_id String        @unique
+  appointment    Appointment   @relation(fields: [appointment_id], references: [id])
+  
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model Document {
+  id              String             @id @default(uuid())
+  type            DocumentType
+  contenu         String             @db.Text
+  file_url        String?
+  
+  appointment_id  String
+  appointment     Appointment        @relation(fields: [appointment_id], references: [id])
+  
+  createdAt       DateTime           @default(now())
+}
+
+model Invoice {
+  id               String        @id @default(uuid())
+  montant          Float
+  methode_paiement PaymentMethod
+  date_paiement    DateTime?
+  statut           PaymentStatus @default(PENDING)
+  
+  appointment_id   String        @unique
+  appointment      Appointment   @relation(fields: [appointment_id], references: [id])
+  
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+}
