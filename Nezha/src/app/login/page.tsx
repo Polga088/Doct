@@ -27,6 +27,11 @@ export default function LoginPage() {
         body: JSON.stringify({ email, password }),
       });
 
+      const ct = res.headers.get('content-type') ?? '';
+      if (!ct.includes('application/json')) {
+        throw new Error('Réponse serveur invalide (attendu JSON). Exécutez `npx prisma generate` puis redémarrez.');
+      }
+
       const data = await res.json();
 
       if (!res.ok) {
