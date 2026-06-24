@@ -79,13 +79,12 @@
 .rbc-month-header { display: flex; background: #f8fafc; }
 
 .rbc-header {
-  padding: 10px 6px;
+  padding: 12px 8px;
   text-align: center;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: #94a3b8;
+  letter-spacing: 0.02em;
+  color: #1e293b;
   border-bottom: 1px solid #f1f5f9;
   flex: 1;
 }
@@ -113,15 +112,15 @@
   color: #94a3b8;
 }
 .rbc-date-cell.rbc-now .rbc-button-link {
-  background: #2563eb;
-  color: #fff;
-  border-radius: 50%;
-  width: 22px;
-  height: 22px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  border-radius: 9999px;
+  width: 26px;
+  height: 26px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 /* ─── VUE SEMAINE / JOUR ────────────────────────────────────── */
@@ -148,7 +147,15 @@
   flex: 1;
   border-left: 1px solid #f1f5f9;
   border-bottom: none;
-  padding: 8px 6px;
+  padding: 10px 8px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.rbc-time-header-content .rbc-header.rbc-today {
+  background: #eff6ff;
+  border-radius: 9999px;
+  color: #1e40af;
 }
 
 .rbc-time-content {
@@ -167,10 +174,10 @@
 .rbc-timeslot-group {
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid #f8fafc;
-  min-height: 48px;
+  border-bottom: 1px solid #f1f5f9;
+  min-height: 58px;
 }
-.rbc-time-slot { display: flex; align-items: flex-start; padding: 2px 6px; flex: 1; }
+.rbc-time-slot { display: flex; align-items: flex-start; padding: 4px 8px; flex: 1; }
 .rbc-time-gutter .rbc-time-slot .rbc-label {
   font-size: 10px;
   font-weight: 500;
@@ -179,35 +186,30 @@
   white-space: nowrap;
 }
 .rbc-day-slot { position: relative; flex: 1; border-left: 1px solid #f1f5f9; }
-.rbc-day-slot .rbc-timeslot-group { border-bottom: 1px solid #f8fafc; }
-.rbc-day-slot .rbc-time-slot { border-top: 1px dashed #f8fafc; }
+.rbc-day-slot .rbc-timeslot-group { border-bottom: 1px solid #f1f5f9; }
+.rbc-day-slot .rbc-time-slot { border-top: 1px dashed #f1f5f9; }
 
 /* ─── ÉVÉNEMENTS ─────────────────────────────────────────────── */
+/* Couleurs / forme par défaut — surchargées par eventPropGetter (Calendar.tsx) */
 .rbc-event,
 .rbc-day-slot .rbc-event {
-  background: #dbeafe !important;
-  border: 1px solid #bfdbfe !important;
-  border-left: 3px solid #2563eb !important;
-  border-radius: 6px !important;
-  padding: 3px 7px !important;
-  font-size: 12px !important;
-  font-weight: 600 !important;
-  color: #1d4ed8 !important;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 600;
   cursor: pointer;
-  box-shadow: none;
-  transition: filter 0.1s;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
 }
-.rbc-event:hover { filter: brightness(0.96); }
+.nezha-cal-event:hover {
+  box-shadow: 0 6px 16px -4px rgb(15 23 42 / 0.12) !important;
+}
 .rbc-event.rbc-selected {
-  background: #bfdbfe !important;
-  border-left-color: #1d4ed8 !important;
-  box-shadow: 0 0 0 2px #93c5fd !important;
+  box-shadow: 0 0 0 2px rgb(191 219 254 / 0.9) !important;
 }
 .rbc-event-label {
   font-size: 10px;
   font-weight: 500;
-  color: #3b82f6;
-  opacity: 0.8;
+  color: #64748b;
+  opacity: 0.95;
 }
 
 /* Événements dans la vue mensuelle */
@@ -239,7 +241,7 @@
 
 /* ─── LIGNE DU TEMPS ACTUEL ──────────────────────────────────── */
 .rbc-current-time-indicator {
-  background: #ef4444;
+  background: #38bdf8;
   height: 2px;
   z-index: 3;
   position: relative;
@@ -247,8 +249,53 @@
 .rbc-current-time-indicator::before {
   content: '';
   width: 9px; height: 9px;
-  background: #ef4444;
+  background: #38bdf8;
   border-radius: 50%;
   position: absolute;
   left: -5px; top: -3.5px;
+}
+
+/* ─── Agenda (liste) : bords discrets ─────────────────────────── */
+.rbc-agenda-view table.rbc-agenda-table,
+.rbc-agenda-view .rbc-agenda-table {
+  border: 1px solid #f1f5f9;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+.rbc-agenda-view .rbc-agenda-table tbody > tr > td {
+  border-color: #f1f5f9;
+}
+
+/* ─── Mode sombre (classe `dark` sur <html>) ───────────────── */
+.dark .rbc-calendar {
+  background: #18181b;
+  color: #e4e4e7;
+}
+.dark .rbc-toolbar-label {
+  color: #fafafa;
+}
+.dark .rbc-btn-group button {
+  background: #27272a;
+  border-color: #3f3f46;
+  color: #a1a1aa;
+}
+.dark .rbc-btn-group button.rbc-active {
+  background: #3f3f46;
+  border-color: #52525b;
+  color: #fafafa;
+}
+.dark .rbc-header {
+  color: #a1a1aa;
+  border-bottom-color: #3f3f46;
+}
+.dark .rbc-time-view,
+.dark .rbc-month-view {
+  border-color: #3f3f46;
+}
+.dark .rbc-time-gutter {
+  background: #18181b;
+  border-right-color: #3f3f46;
+}
+.dark .rbc-day-slot {
+  border-left-color: #3f3f46;
 }

@@ -1,0 +1,3 @@
+﻿id,nom,prenom,date_naissance,tel,email,adresse,cin,sexe,groupeSanguin,taille,poids,allergies,antecedents,assuranceType,matriculeAssurance,createdAt
+183549e1-d05d-43c8-b31a-ef33fabcded5,BRIGUI,NADIA,1996-06-30,605620519,,laayayda,AE272067,FEMININ,,,,,,AUCUNE,,2026-04-12T03:05:44.242Z
+e4beaa1c-da05-4c68-be8d-768e5ba0e609,belouarrat,mohammed,2026-03-23,667807950,,laayayda,AB817186,MASCULIN,,,,,,AUCUNE,,2026-04-12T03:05:44.239Z

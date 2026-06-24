@@ -1,33 +1,34 @@
 import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { authCookieSecure } from '@/lib/auth-cookie';
 
-// GET request = lien <a> natif → supprime cookie + redirect 302 vers /login
-export async function GET() {
-  const response = NextResponse.redirect(
-    new URL('/login', process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000')
-  );
-  
+/** Cookie de session JWT (aligné sur login) — pas de cookie nommé `token` dans Nezha */
+export const AUTH_COOKIE_NAME = 'auth_token';
+
+function clearSessionCookie(response: NextResponse) {
   response.cookies.set({
-    name: 'auth_token',
+    name: AUTH_COOKIE_NAME,
     value: '',
     httpOnly: true,
     path: '/',
+    sameSite: 'lax',
+    secure: authCookieSecure(),
     maxAge: 0,
     expires: new Date(0),
   });
+}
 
+/** Lien natif <a href="/api/auth/logout"> → suppression cookie + redirect */
+export async function GET(request: NextRequest) {
+  const loginUrl = new URL('/login', request.url);
+  const response = NextResponse.redirect(loginUrl);
+  clearSessionCookie(response);
   return response;
 }
 
-// POST request = fallback JS fetch
+/** Déconnexion depuis le client (fetch POST) */
 export async function POST() {
-  const response = NextResponse.json({ message: 'Déconnexion réussie' });
-  response.cookies.set({
-    name: 'auth_token',
-    value: '',
-    httpOnly: true,
-    path: '/',
-    maxAge: 0,
-    expires: new Date(0),
-  });
+  const response = NextResponse.json({ ok: true, message: 'Déconnexion réussie' });
+  clearSessionCookie(response);
   return response;
 }

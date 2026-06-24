@@ -1,9 +1,15 @@
 import { SignJWT, jwtVerify } from 'jose';
 import bcrypt from 'bcryptjs';
 
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'super-secret-key-pour-le-developpement-local'
-);
+import { getJwtSecretBytes } from '@/lib/jwt-env';
+
+const JWT_SECRET = getJwtSecretBytes();
+
+/** Durée de session côté navigateur (cookie maxAge) — 12 h en secondes */
+export const AUTH_SESSION_MAX_AGE_SEC = 60 * 60 * 12;
+
+/** Durée d’expiration du JWT (doit correspondre au cookie) */
+export const AUTH_JWT_EXPIRES = '12h' as const;
 
 export async function hashPassword(password: string): Promise<string> {
   const salt = await bcrypt.genSalt(10);
@@ -14,7 +20,10 @@ export async function verifyPassword(password: string, hash: string): Promise<bo
   return bcrypt.compare(password, hash);
 }
 
-export async function signJwt(payload: any, expiresIn: string = '1d'): Promise<string> {
+export async function signJwt(
+  payload: Record<string, unknown>,
+  expiresIn: string = AUTH_JWT_EXPIRES
+): Promise<string> {
   return new SignJWT(payload)
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()

@@ -1,7 +1,9 @@
 import { ReactNode } from 'react';
-import { CalendarDays, Users, Package } from 'lucide-react';
+import { CalendarDays, Users, Package, Banknote } from 'lucide-react';
 import Link from 'next/link';
-
+import { LogoutLink } from '@/components/auth/LogoutLink';
+import { DoctorStatusBanner } from '@/components/assistant/DoctorStatusBanner';
+import { PatientCallListener } from '@/components/assistant/PatientCallListener';
 export default function AssistantLayout({ children }: { children: ReactNode }) {
   return (
     <div className="flex h-screen bg-[#f8fafc]">
@@ -22,9 +24,12 @@ export default function AssistantLayout({ children }: { children: ReactNode }) {
             <div className="p-2 bg-blue-50 rounded-full text-blue-600"><Users size={20} /></div>
             Base Patients
           </Link>
+          <Link href="/dashboard/assistant/caisse" className="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 transition-colors font-semibold text-slate-700">
+            <div className="p-2 bg-emerald-50 rounded-full text-emerald-600"><Banknote size={20} /></div>
+            Encaissement
+          </Link>
         </nav>
 
-        {/* DÉCONNEXION : lien HTML natif, aucun JS requis */}
         <div className="pt-6 border-t border-slate-100">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -34,20 +39,17 @@ export default function AssistantLayout({ children }: { children: ReactNode }) {
                 <p className="text-xs text-slate-500">Connectée</p>
               </div>
             </div>
-            <a
-              href="/login"
-              onClick={() => { document.cookie = 'auth_token=; Max-Age=0; path=/;'; }}
-              title="Déconnexion"
-              className="p-2 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-            </a>
+            <LogoutLink variant="sidebar" />
           </div>
         </div>
       </div>
 
       <div className="flex-1 overflow-auto p-10 bg-[#f8fafc]">
-        <div className="max-w-7xl mx-auto">{children}</div>
+        <div className="max-w-7xl mx-auto">
+          <PatientCallListener />
+          <DoctorStatusBanner />
+          {children}
+        </div>
       </div>
     </div>
   );

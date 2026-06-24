@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Inter } from 'next/font/google';
-import { Toaster } from "@/components/ui/sonner";
+import { Toaster } from '@/components/ui/sonner';
+import { ThemeProvider } from '@/components/theme-provider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,9 +20,10 @@ export default function RootLayout({
     // suppressHydrationWarning évite le mismatch causé par des extensions navigateur
     <html lang="fr" suppressHydrationWarning>
       <body className={inter.className}>
-        {/* Pas de ThemeProvider = pas de classe "dark" injectée côté client */}
-        {children}
-        <Toaster position="bottom-right" richColors />
+        <ThemeProvider>
+          {children}
+          <Toaster position="bottom-right" richColors />
+        </ThemeProvider>
       </body>
     </html>
   );

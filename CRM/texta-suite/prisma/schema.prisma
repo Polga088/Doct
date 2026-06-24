@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  name        String
+  status      String   @default("KANBAN")
+  totalBudget Float    @default(0)
+  spent       Float    @default(0)
+  currency    String   @default("USD")
+  deadline    DateTime?
+  tasks       Task[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Task {
+  id           String   @id @default(cuid())
+  title        String
+  assignee     String
+  status       String   @default("incoming") // incoming, in_progress, review, completed
+  syncProgress Int      @default(0)
+  projectId    String
+  project      Project  @relation(fields: [projectId], references: [id])
+  messages     Message[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model User {
+  id             String    @id @default(cuid())
+  name           String
+  avatarInitials String
+  avatarColor    String    @default("bg-primary")
+  messages       Message[]
+  createdAt      DateTime  @default(now())
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  content   String
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+  taskId    String?
+  task      Task?    @relation(fields: [taskId], references: [id])
+  projectId String?
+  createdAt DateTime @default(now())
+}

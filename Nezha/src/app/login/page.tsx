@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { HeartPulse } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -11,7 +11,6 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
 export default function LoginPage() {
-  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -24,6 +23,7 @@ export default function LoginPage() {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
         body: JSON.stringify({ email, password }),
       });
 
@@ -40,17 +40,18 @@ export default function LoginPage() {
 
       toast.success("Connexion réussie ! Redirection...");
 
-      // Redirection stricte selon le rôle exact retourné par le JWT
-      const role = data.user.role; // ex: "ADMIN", "DOCTOR", "ASSISTANT"
-      if (role === 'ADMIN') {
-        router.push('/dashboard/admin');
-      } else if (role === 'DOCTOR') {
-        router.push('/dashboard/doctor');
-      } else if (role === 'ASSISTANT') {
-        router.push('/dashboard/assistant');
-      } else {
-        router.push('/dashboard'); // Fallback
-      }
+      const role = data.user.role;
+      const target =
+        role === 'ADMIN'
+          ? '/dashboard/admin'
+          : role === 'DOCTOR'
+            ? '/dashboard/doctor'
+            : role === 'ASSISTANT'
+              ? '/dashboard/assistant'
+              : '/dashboard';
+
+      // Rechargement complet pour que le cookie httpOnly soit bien pris en compte
+      window.location.href = target;
     } catch (err: any) {
       toast.error(err.message);
     } finally {
@@ -95,7 +96,9 @@ export default function LoginPage() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="password" className="text-slate-700 font-bold">Mot de passe</Label>
-                  <a href="#" className="text-sm font-semibold text-blue-600 hover:text-blue-700 hover:underline">Oublié ?</a>
+                  <Link href="/forgot-password" className="text-sm font-semibold text-blue-600 hover:text-blue-700 hover:underline">
+                    Oublié ?
+                  </Link>
                 </div>
                 <Input
                   id="password"
@@ -119,7 +122,8 @@ export default function LoginPage() {
                 {loading ? 'Authentification...' : 'Se connecter'}
               </Button>
               <p className="text-sm text-slate-500 text-center font-medium">
-                 Système médical haute disponibilité. <br/> Accès restreint au personnel accrédité.
+                Aucune inscription en ligne — les comptes sont créés par l&apos;administration du
+                cabinet. Accès réservé au personnel habilité.
               </p>
             </CardFooter>
           </form>

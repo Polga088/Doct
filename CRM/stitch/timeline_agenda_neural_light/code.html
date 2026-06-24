@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Synaptic Timeline | TexTa Technology</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#d6b6ff",
+                        "secondary": "#7a23dc",
+                        "tertiary-container": "#00f4fe",
+                        "inverse-on-surface": "#9a9d9f",
+                        "background": "#f5f7f9",
+                        "secondary-fixed": "#e1c7ff",
+                        "on-primary-fixed": "#003840",
+                        "on-secondary": "#faefff",
+                        "surface": "#f5f7f9",
+                        "inverse-surface": "#0b0f10",
+                        "tertiary-fixed": "#00f4fe",
+                        "on-error": "#ffefee",
+                        "surface-variant": "#d9dde0",
+                        "surface-bright": "#f5f7f9",
+                        "surface-container": "#e5e9eb",
+                        "surface-dim": "#d0d5d8",
+                        "surface-tint": "#006571",
+                        "on-background": "#2c2f31",
+                        "outline": "#747779",
+                        "tertiary-fixed-dim": "#00e5ee",
+                        "error": "#b31b25",
+                        "on-surface-variant": "#595c5e",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#d9dde0",
+                        "on-tertiary-fixed": "#004346",
+                        "on-tertiary-fixed-variant": "#006266",
+                        "surface-container-low": "#eef1f3",
+                        "on-primary-container": "#004d57",
+                        "on-surface": "#2c2f31",
+                        "outline-variant": "#abadaf",
+                        "error-dim": "#9f0519",
+                        "error-container": "#fb5151",
+                        "primary-dim": "#005863",
+                        "tertiary-dim": "#00595d",
+                        "primary": "#006571",
+                        "primary-fixed": "#00e3fd",
+                        "surface-container-high": "#dfe3e6",
+                        "on-secondary-fixed-variant": "#6f08d0",
+                        "on-tertiary": "#c9fcff",
+                        "on-primary": "#d8f8ff",
+                        "inverse-primary": "#00e3fd",
+                        "on-secondary-fixed": "#4a0090",
+                        "tertiary": "#00666a",
+                        "on-tertiary-container": "#00575b",
+                        "on-primary-fixed-variant": "#005762",
+                        "primary-fixed-dim": "#00d4ec",
+                        "on-secondary-container": "#6300bd",
+                        "secondary-container": "#e1c7ff",
+                        "on-error-container": "#570008",
+                        "secondary-dim": "#6e04cf",
+                        "primary-container": "#00e3fd"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Manrope"],
+                        "label": ["Space Grotesk"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; }
+        .font-headline { font-family: 'Space Grotesk', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .synapse-line {
+            background: linear-gradient(to bottom, transparent, #006571 10%, #00e3fd 50%, #7a23dc 90%, transparent);
+            width: 1px;
+        }
+        .glass-panel {
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.7);
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+<!-- TopNavBar Implementation -->
+<nav class="fixed top-0 w-full z-50 bg-white/70 dark:bg-zinc-950/70 backdrop-blur-2xl flex justify-between items-center px-8 h-16 w-full shadow-sm backdrop-blur-xl no-border shadow-[0px_1px_20px_rgba(0,229,255,0.05)]">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-bold tracking-tighter text-cyan-700 dark:text-cyan-400 font-headline">TexTa</span>
+<div class="hidden md:flex items-center space-x-6">
+<a class="text-zinc-500 dark:text-zinc-400 font-['Space_Grotesk'] tracking-tight hover:text-purple-500 transition-colors duration-300" href="#">Dashboard</a>
+<a class="text-zinc-500 dark:text-zinc-400 font-['Space_Grotesk'] tracking-tight hover:text-purple-500 transition-colors duration-300" href="#">Analytics</a>
+<a class="text-zinc-500 dark:text-zinc-400 font-['Space_Grotesk'] tracking-tight hover:text-purple-500 transition-colors duration-300" href="#">Assets</a>
+<a class="text-cyan-600 dark:text-cyan-400 font-bold border-b-2 border-cyan-500 font-['Space_Grotesk'] tracking-tight hover:text-purple-500 transition-colors duration-300" href="#">Neural Hub</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center bg-surface-container-low px-4 py-1.5 rounded-full">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm font-body ml-2" placeholder="Search Neural Hub..." type="text"/>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">settings</button>
+<div class="w-8 h-8 rounded-full overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="professional portrait of a creative technology director in a minimalist studio with soft natural light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHdD_IqO115k4FKpdIiv7k8jgAW3r1tfQ-8ZmC2_5iA7WaZDRiC19m7Uj1RoprPe5ZFk5lV2-oaw5_apWD_K5y8oRJ3V6iCktt7M92yGvBo-s5h8GJf89YB25gKXr25-8HZxwQ7ZA250L5wM2rJRPxVna0r7bsc25apb4-Yri3fnqhkuuWUsGvw06StxRY033XkRluSB1venCZ3xKZuv9x_2lwUrRW7gB-pA81VPPSZ2a6zW4XB1vXzoYNo2PPDdVcNJiHgtof-Yse"/>
+</div>
+</div>
+</nav>
+<!-- SideNavBar Implementation -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-20 rounded-r-full bg-zinc-50/50 dark:bg-zinc-900/50 backdrop-blur-md flex flex-col items-center py-8 space-y-8 w-20 no-border bg-gradient-to-b from-transparent via-cyan-50/20 to-transparent shadow-[20px_0px_40px_rgba(122,35,220,0.04)] z-40">
+<div class="group cursor-pointer flex flex-col items-center">
+<div class="w-10 h-10 rounded-full flex items-center justify-center text-zinc-400 dark:text-zinc-600 hover:scale-110 hover:text-cyan-500 transition-all duration-500 ease-in-out">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+</div>
+<span class="font-['Space_Grotesk'] uppercase text-[10px] tracking-[0.1em] mt-1 text-zinc-400">Nodes</span>
+</div>
+<div class="group cursor-pointer flex flex-col items-center">
+<div class="w-10 h-10 rounded-full flex items-center justify-center text-purple-600 dark:text-purple-400 bg-white dark:bg-zinc-800 shadow-[0px_0px_15px_rgba(122,35,220,0.2)] rounded-full hover:scale-110 hover:text-cyan-500 transition-all duration-500 ease-in-out">
+<span class="material-symbols-outlined" data-icon="hub">hub</span>
+</div>
+<span class="font-['Space_Grotesk'] uppercase text-[10px] tracking-[0.1em] mt-1 text-purple-600">Flows</span>
+</div>
+<div class="group cursor-pointer flex flex-col items-center">
+<div class="w-10 h-10 rounded-full flex items-center justify-center text-zinc-400 dark:text-zinc-600 hover:scale-110 hover:text-cyan-500 transition-all duration-500 ease-in-out">
+<span class="material-symbols-outlined" data-icon="database">database</span>
+</div>
+<span class="font-['Space_Grotesk'] uppercase text-[10px] tracking-[0.1em] mt-1 text-zinc-400">Data</span>
+</div>
+<div class="group cursor-pointer flex flex-col items-center">
+<div class="w-10 h-10 rounded-full flex items-center justify-center text-zinc-400 dark:text-zinc-600 hover:scale-110 hover:text-cyan-500 transition-all duration-500 ease-in-out">
+<span class="material-symbols-outlined" data-icon="sync_alt">sync_alt</span>
+</div>
+<span class="font-['Space_Grotesk'] uppercase text-[10px] tracking-[0.1em] mt-1 text-zinc-400">Sync</span>
+</div>
+<div class="group cursor-pointer flex flex-col items-center">
+<div class="w-10 h-10 rounded-full flex items-center justify-center text-zinc-400 dark:text-zinc-600 hover:scale-110 hover:text-cyan-500 transition-all duration-500 ease-in-out">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+</div>
+<span class="font-['Space_Grotesk'] uppercase text-[10px] tracking-[0.1em] mt-1 text-zinc-400">Team</span>
+</div>
+<div class="mt-auto group cursor-pointer flex flex-col items-center pb-4">
+<div class="w-10 h-10 rounded-full flex items-center justify-center text-zinc-400 dark:text-zinc-600 hover:scale-110 hover:text-cyan-500 transition-all duration-500 ease-in-out">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+</div>
+<span class="font-['Space_Grotesk'] uppercase text-[10px] tracking-[0.1em] mt-1 text-zinc-400">Logs</span>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="ml-20 pt-24 px-8 pb-12 overflow-x-hidden">
+<!-- Hero Header -->
+<header class="max-w-6xl mx-auto mb-16 flex justify-between items-end">
+<div class="space-y-2">
+<div class="flex items-center gap-2 text-primary uppercase font-headline tracking-[0.2em] text-xs font-bold">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+                    Operational Architecture
+                </div>
+<h1 class="text-6xl font-black font-headline tracking-tighter text-on-surface">Synaptic <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Timeline</span></h1>
+<p class="text-on-surface-variant font-body max-w-md">Orchestrating the flow of intelligence across Neural Rail protocols and asset deployments.</p>
+</div>
+<div class="flex gap-4">
+<button class="px-8 py-3 bg-gradient-to-r from-primary to-primary-container text-white font-headline font-bold rounded-full shadow-[0px_20px_40px_rgba(0,227,253,0.15)] flex items-center gap-2 group transition-all hover:scale-105">
+<span class="material-symbols-outlined text-sm">add</span>
+                    New Signal
+                </button>
+</div>
+</header>
+<!-- Timeline Section -->
+<section class="max-w-6xl mx-auto relative grid grid-cols-1 md:grid-cols-[1fr_2px_1fr] gap-x-12">
+<!-- Central Synapse Line -->
+<div class="hidden md:block col-start-2 relative">
+<div class="synapse-line absolute inset-0"></div>
+</div>
+<!-- Timeline Entries -->
+<div class="space-y-24 md:col-span-3">
+<!-- Entry 1 (Left-ish) -->
+<div class="grid grid-cols-1 md:grid-cols-[1fr_2px_1fr] gap-x-12 items-center">
+<div class="text-right space-y-4">
+<div class="inline-block px-4 py-1 bg-surface-container-low rounded-full font-headline text-[10px] tracking-widest uppercase text-primary">09:00 AM — PHASE 01</div>
+<h3 class="text-2xl font-bold font-headline text-on-surface">Neural Mesh Calibration</h3>
+<p class="text-on-surface-variant font-body text-sm ml-auto max-w-xs">Initializing primary synapse pathways for the TexTa core. Synchronizing node weights and bias distributions.</p>
+<div class="flex justify-end gap-3 pt-2">
+<span class="px-3 py-1 bg-primary/5 rounded-full text-primary font-headline text-[10px] font-bold">STABLE</span>
+<span class="px-3 py-1 bg-secondary/5 rounded-full text-secondary font-headline text-[10px] font-bold">ENCRYPTED</span>
+</div>
+</div>
+<!-- Node -->
+<div class="relative flex justify-center py-8 md:py-0">
+<div class="w-6 h-6 rounded-full bg-white border-4 border-primary shadow-[0px_0px_20px_rgba(0,101,113,0.4)] z-10"></div>
+</div>
+<div class="hidden md:block"></div>
+</div>
+<!-- Entry 2 (Right-ish) -->
+<div class="grid grid-cols-1 md:grid-cols-[1fr_2px_1fr] gap-x-12 items-center">
+<div class="hidden md:block"></div>
+<!-- Node -->
+<div class="relative flex justify-center py-8 md:py-0">
+<div class="w-10 h-10 rounded-full bg-gradient-to-br from-secondary to-primary-container p-0.5 shadow-[0px_0px_30px_rgba(122,35,220,0.3)] z-10">
+<div class="w-full h-full bg-white rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<div class="inline-block px-4 py-1 bg-surface-container-low rounded-full font-headline text-[10px] tracking-widest uppercase text-secondary">11:45 AM — ACTIVE BURST</div>
+<h3 class="text-2xl font-bold font-headline text-on-surface">Asymmetric Data Ingestion</h3>
+<p class="text-on-surface-variant font-body text-sm max-w-xs">Processing external sensor telemetry from 42 edge nodes. Real-time translation to Neural Rail format.</p>
+<!-- Progress Bar Component -->
+<div class="pt-4 space-y-2">
+<div class="flex justify-between text-[10px] font-headline font-bold uppercase text-on-surface-variant">
+<span>Integrity</span>
+<span>88%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-secondary to-primary-container w-[88%] rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Entry 3: Large Glass Card (Bento Style Offset) -->
+<div class="grid grid-cols-1 md:grid-cols-[1fr_2px_1fr] gap-x-12 items-center">
+<div class="md:col-span-1 glass-panel p-8 rounded-xl shadow-[0px_20px_60px_rgba(0,0,0,0.03)] border-outline-variant/10 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4">
+<span class="material-symbols-outlined text-surface-container-highest text-6xl">analytics</span>
+</div>
+<div class="relative z-10 space-y-4">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+<span class="font-headline text-[10px] font-bold uppercase tracking-widest text-error">Critical Deadline</span>
+</div>
+<h3 class="text-xl font-bold font-headline leading-tight">Neural Sync-Protocol Alpha 4</h3>
+<p class="text-sm text-on-surface-variant font-body">Verification of non-linear memory clusters before the midnight wipe sequence. Requires multi-signature clearance.</p>
+<div class="flex items-center gap-4 mt-6">
+<div class="flex -space-x-2">
+<img class="w-8 h-8 rounded-full border-2 border-white object-cover" data-alt="portrait of a software engineer with glasses in a tech office environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFkXRGb1zuZaDjuJATp0s3u6zuomjlofEaQIYVtxSPM0qbjqAJJ8Jp5O7_NTUmKNfoR-9NTFNwACH5ye9uuvaWYgu2YOnnQAg2vZwr9FDNVOctRimjjvji0TM_OTmMrQQApjTx7gwkPWG4YTDf5zjzlo34fjH-KS0cnxUk-_XBtk4XKoQ-z4kytSUQOKqPH09HLXywfVVVGDVxvj3szhCRSzJW4GXVKkAvExFvvKkqUlhRwGbTPgBBShMrGp9snPAoeph7UZh9Fhdq"/>
+<img class="w-8 h-8 rounded-full border-2 border-white object-cover" data-alt="portrait of a data scientist smiling in a modern office with natural light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBD8b692LF3iQcnKvioVBXTGA1baN18PEbsxjM8Kc5jfZUpVO38RmliJWFN81hNvlTOPauiRrXgtjw59tYSWumeaKKWnJkpC1j5Ga4kpIW6etwwW0Ugfap11dsH8nufXbZtvcp0nFqGhqn8KDzJaE6ADKCkD5PrS7d4L8HKYbUO1uBABYtJ4ikdJxSQlr-1DDnUgPE1hEdjuJA2JepnI05voPs5ZdNCse7zXIOPfHMhRsfSdFb4IUafrW8LoQb8SC6hDf6WvFad6d1F"/>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border-2 border-white flex items-center justify-center text-[10px] font-bold">+4</div>
+</div>
+<button class="text-primary font-headline text-xs font-bold underline decoration-primary-container underline-offset-4 hover:text-secondary hover:decoration-secondary transition-all">Review Protocol</button>
+</div>
+</div>
+</div>
+<!-- Node -->
+<div class="relative flex justify-center py-8 md:py-0">
+<div class="w-4 h-4 rounded-full bg-on-surface-variant shadow-lg z-10"></div>
+</div>
+<div class="hidden md:block"></div>
+</div>
+<!-- Entry 4 (Right-ish) -->
+<div class="grid grid-cols-1 md:grid-cols-[1fr_2px_1fr] gap-x-12 items-center">
+<div class="hidden md:block"></div>
+<!-- Node -->
+<div class="relative flex justify-center py-8 md:py-0">
+<div class="w-6 h-6 rounded-full bg-white border-4 border-secondary shadow-[0px_0px_20px_rgba(122,35,220,0.4)] z-10"></div>
+</div>
+<div class="space-y-4">
+<div class="inline-block px-4 py-1 bg-surface-container-low rounded-full font-headline text-[10px] tracking-widest uppercase text-on-surface-variant">03:20 PM — SYSTEM OPT</div>
+<h3 class="text-2xl font-bold font-headline text-on-surface">Latency Sink Disposal</h3>
+<p class="text-on-surface-variant font-body text-sm max-w-xs">Clearing stagnant buffer nodes and optimizing flow across the central neural bus.</p>
+<div class="bg-surface-container-lowest p-4 rounded-xl shadow-sm border border-outline-variant/5">
+<div class="flex items-center justify-between">
+<span class="font-headline text-[10px] text-on-surface-variant font-bold">IMPROVEMENT</span>
+<span class="text-primary font-headline font-bold">+24ms</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Stats Grid (Bento) -->
+<section class="max-w-6xl mx-auto mt-32 grid grid-cols-1 md:grid-cols-4 gap-6">
+<div class="md:col-span-2 bg-white p-8 rounded-xl shadow-[0px_20px_40px_rgba(0,101,113,0.04)] space-y-6">
+<div class="flex justify-between items-start">
+<h4 class="font-headline font-bold text-on-surface-variant uppercase tracking-widest text-xs">Network Vitality</h4>
+<span class="material-symbols-outlined text-primary">monitoring</span>
+</div>
+<div class="space-y-4">
+<div class="h-32 w-full flex items-end gap-1 px-2">
+<div class="flex-1 bg-surface-container-low rounded-t-full h-[40%]"></div>
+<div class="flex-1 bg-surface-container-low rounded-t-full h-[60%]"></div>
+<div class="flex-1 bg-primary-container rounded-t-full h-[85%]"></div>
+<div class="flex-1 bg-surface-container-low rounded-t-full h-[55%]"></div>
+<div class="flex-1 bg-secondary-container rounded-t-full h-[70%]"></div>
+<div class="flex-1 bg-primary rounded-t-full h-[95%]"></div>
+<div class="flex-1 bg-surface-container-low rounded-t-full h-[50%]"></div>
+</div>
+<p class="text-sm font-body text-on-surface-variant">Fluctuation detected in Node 7, re-routing through secondary synapses.</p>
+</div>
+</div>
+<div class="bg-gradient-to-br from-secondary to-purple-800 p-8 rounded-xl shadow-xl flex flex-col justify-between text-white">
+<div class="material-symbols-outlined text-white/50 text-3xl">psychology</div>
+<div>
+<div class="text-4xl font-headline font-black tracking-tight">99.8%</div>
+<div class="text-[10px] font-headline font-bold uppercase tracking-widest opacity-70">Uptime Reliability</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-xl shadow-sm border border-outline-variant/5 flex flex-col justify-between">
+<div class="material-symbols-outlined text-primary text-3xl">auto_fix_high</div>
+<div>
+<div class="text-4xl font-headline font-black tracking-tight text-on-surface">1.2s</div>
+<div class="text-[10px] font-headline font-bold uppercase tracking-widest text-on-surface-variant">Avg. Signal Pulse</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Space -->
+<footer class="max-w-6xl mx-auto py-12 px-8 flex justify-between items-center text-on-surface-variant/40 font-headline text-[10px] font-bold tracking-widest uppercase border-t border-surface-container-low">
+<div>TexTa Technology Neural Rail v4.2.0</div>
+<div class="flex gap-8">
+<a class="hover:text-primary transition-colors" href="#">Privacy Neural</a>
+<a class="hover:text-primary transition-colors" href="#">Flow Status</a>
+<a class="hover:text-primary transition-colors" href="#">Contact Synapse</a>
+</div>
+</footer>
+</body></html>

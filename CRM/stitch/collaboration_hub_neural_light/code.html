@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d9dde0; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #006571; }
+        .neural-glow-cyan { box-shadow: 0px 20px 40px rgba(0, 227, 253, 0.08); }
+        .neural-glow-purple { box-shadow: 0px 20px 40px rgba(122, 35, 220, 0.06); }
+        .glass-panel { backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed-dim": "#d6b6ff",
+                      "secondary": "#7a23dc",
+                      "tertiary-container": "#00f4fe",
+                      "inverse-on-surface": "#9a9d9f",
+                      "background": "#f5f7f9",
+                      "secondary-fixed": "#e1c7ff",
+                      "on-primary-fixed": "#003840",
+                      "on-secondary": "#faefff",
+                      "surface": "#f5f7f9",
+                      "inverse-surface": "#0b0f10",
+                      "tertiary-fixed": "#00f4fe",
+                      "on-error": "#ffefee",
+                      "surface-variant": "#d9dde0",
+                      "surface-bright": "#f5f7f9",
+                      "surface-container": "#e5e9eb",
+                      "surface-dim": "#d0d5d8",
+                      "surface-tint": "#006571",
+                      "on-background": "#2c2f31",
+                      "outline": "#747779",
+                      "tertiary-fixed-dim": "#00e5ee",
+                      "error": "#b31b25",
+                      "on-surface-variant": "#595c5e",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container-highest": "#d9dde0",
+                      "on-tertiary-fixed": "#004346",
+                      "on-tertiary-fixed-variant": "#006266",
+                      "surface-container-low": "#eef1f3",
+                      "on-primary-container": "#004d57",
+                      "on-surface": "#2c2f31",
+                      "outline-variant": "#abadaf",
+                      "error-dim": "#9f0519",
+                      "error-container": "#fb5151",
+                      "primary-dim": "#005863",
+                      "tertiary-dim": "#00595d",
+                      "primary": "#006571",
+                      "primary-fixed": "#00e3fd",
+                      "surface-container-high": "#dfe3e6",
+                      "on-secondary-fixed-variant": "#6f08d0",
+                      "on-tertiary": "#c9fcff",
+                      "on-primary": "#d8f8ff",
+                      "inverse-primary": "#00e3fd",
+                      "on-secondary-fixed": "#4a0090",
+                      "tertiary": "#00666a",
+                      "on-tertiary-container": "#00575b",
+                      "on-primary-fixed-variant": "#005762",
+                      "primary-fixed-dim": "#00d4ec",
+                      "on-secondary-container": "#6300bd",
+                      "secondary-container": "#e1c7ff",
+                      "on-error-container": "#570008",
+                      "secondary-dim": "#6e04cf",
+                      "primary-container": "#00e3fd"
+              },
+              "borderRadius": {
+                      "DEFAULT": "1rem",
+                      "lg": "2rem",
+                      "xl": "3rem",
+                      "full": "9999px"
+              },
+              "fontFamily": {
+                      "headline": ["Space Grotesk"],
+                      "body": ["Manrope"],
+                      "label": ["Space Grotesk"]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-surface font-body text-on-surface overflow-hidden">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-2xl flex justify-between items-center px-8 h-16 w-full shadow-sm">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-bold tracking-tighter text-cyan-700 font-headline">TexTa</span>
+<div class="hidden md:flex items-center gap-6">
+<a class="text-zinc-500 font-label text-sm tracking-tight hover:text-purple-500 transition-colors duration-300" href="#">Dashboard</a>
+<a class="text-zinc-500 font-label text-sm tracking-tight hover:text-purple-500 transition-colors duration-300" href="#">Analytics</a>
+<a class="text-zinc-500 font-label text-sm tracking-tight hover:text-purple-500 transition-colors duration-300" href="#">Assets</a>
+<a class="text-cyan-600 font-bold border-b-2 border-cyan-500 font-label text-sm tracking-tight" href="#">Neural Hub</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="bg-surface-container-low px-4 py-1.5 rounded-full flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-lg">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-48 font-label" placeholder="Search synapses..." type="text"/>
+</div>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<img alt="User Profile Avatar" class="w-8 h-8 rounded-full object-cover" data-alt="Portrait of a professional woman with a clean tech aesthetic, soft laboratory lighting, modern workspace background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9SMtQ4-XDlwT2J7ulJ0NVdxtRNGfaJPwOXvvvrfsXeTYGL8b0TNG8JQjKehnoU0T-RdeZZ6GEVSG3kAgIYIY8hOfns7XSKUpveXPcYzLLwISffLl7vGi1-XWfEz2x93woC8pFkkEJt8dKnQhlBxztjn9DlbNAFA3zFgoOEocT44RNmNnXbZy5tn1_J2BYWaZLbNI4v_UFw4-4ZnWDZjNxAS9mghg1FUNPOsLjKw-QCju5PsUCVNHMdfnzaqEW0uT9fck8ASu6X7Bz"/>
+</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-20 flex flex-col items-center py-8 space-y-8 bg-zinc-50/50 backdrop-blur-md z-40 bg-gradient-to-b from-transparent via-cyan-50/20 to-transparent">
+<div class="flex flex-col items-center gap-6">
+<div class="group relative flex flex-col items-center">
+<button class="w-12 h-12 flex items-center justify-center text-purple-600 bg-white shadow-[0px_0px_15px_rgba(122,35,220,0.2)] rounded-full hover:scale-110 transition-all duration-500">
+<span class="material-symbols-outlined">hub</span>
+</button>
+<span class="font-label uppercase text-[10px] tracking-[0.1em] mt-2 text-purple-600">Flows</span>
+</div>
+<div class="group relative flex flex-col items-center">
+<button class="w-12 h-12 flex items-center justify-center text-zinc-400 hover:text-cyan-500 hover:scale-110 transition-all duration-500">
+<span class="material-symbols-outlined">account_tree</span>
+</button>
+<span class="font-label uppercase text-[10px] tracking-[0.1em] mt-2 text-zinc-400">Nodes</span>
+</div>
+<div class="group relative flex flex-col items-center">
+<button class="w-12 h-12 flex items-center justify-center text-zinc-400 hover:text-cyan-500 hover:scale-110 transition-all duration-500">
+<span class="material-symbols-outlined">database</span>
+</button>
+<span class="font-label uppercase text-[10px] tracking-[0.1em] mt-2 text-zinc-400">Data</span>
+</div>
+<div class="group relative flex flex-col items-center">
+<button class="w-12 h-12 flex items-center justify-center text-zinc-400 hover:text-cyan-500 hover:scale-110 transition-all duration-500">
+<span class="material-symbols-outlined">sync_alt</span>
+</button>
+<span class="font-label uppercase text-[10px] tracking-[0.1em] mt-2 text-zinc-400">Sync</span>
+</div>
+<div class="group relative flex flex-col items-center">
+<button class="w-12 h-12 flex items-center justify-center text-zinc-400 hover:text-cyan-500 hover:scale-110 transition-all duration-500">
+<span class="material-symbols-outlined">group</span>
+</button>
+<span class="font-label uppercase text-[10px] tracking-[0.1em] mt-2 text-zinc-400">Team</span>
+</div>
+</div>
+<div class="mt-auto">
+<button class="w-12 h-12 bg-gradient-to-tr from-primary to-primary-container text-white rounded-full flex items-center justify-center shadow-lg hover:scale-105 transition-transform">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Canvas: 3 Column Layout -->
+<main class="ml-20 mt-16 h-[calc(100vh-64px)] grid grid-cols-12 gap-0 overflow-hidden">
+<!-- Left Column: Channel/Direct Message List -->
+<div class="col-span-3 bg-surface-container-low/50 glass-panel overflow-y-auto px-6 py-8">
+<div class="mb-8">
+<h3 class="font-headline font-bold text-lg tracking-tight mb-6">Neural Channels</h3>
+<div class="space-y-2">
+<div class="flex items-center gap-3 p-3 rounded-xl bg-white/60 neural-glow-cyan">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<span class="font-medium text-sm"># engineering-sync</span>
+<span class="ml-auto bg-primary/10 text-primary text-[10px] px-2 py-0.5 rounded-full font-bold">2</span>
+</div>
+<div class="flex items-center gap-3 p-3 rounded-xl hover:bg-surface-container-high/40 transition-colors cursor-pointer group">
+<div class="w-2 h-2 rounded-full bg-zinc-300"></div>
+<span class="font-medium text-sm text-on-surface-variant group-hover:text-on-surface"># design-flow</span>
+</div>
+<div class="flex items-center gap-3 p-3 rounded-xl hover:bg-surface-container-high/40 transition-colors cursor-pointer group">
+<div class="w-2 h-2 rounded-full bg-zinc-300"></div>
+<span class="font-medium text-sm text-on-surface-variant group-hover:text-on-surface"># product-roadmap</span>
+</div>
+</div>
+</div>
+<div class="mb-8">
+<h3 class="font-headline font-bold text-lg tracking-tight mb-6">Active Nodes</h3>
+<div class="space-y-4">
+<div class="flex items-center gap-3 p-2 group cursor-pointer">
+<div class="relative">
+<img alt="Avatar" class="w-10 h-10 rounded-full object-cover" data-alt="Close-up of a diverse male developer in a futuristic office setting with neon accents" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVchx1d-7qtQqk7T9YMURp2WqxBhexzQe4wMt9MCUBYydt1v458Nrbz_btZZ_rYoe5YKr_ULkVkpM1jMveYSOcgeZt1oIfLJG2m8mjr9YywToyXu3YS79zwlCDx-54kUxYus0vcbyiw1yAajbj72OP8UdMi8YIF7DgH0WhnZb7YLhvrbPyFtmS2iYKClHG66RLzSn9Sq76jHoDkEBK44--zh8mFj_9CgT40HMS5zVuUjLw54Feb_Up_naPtRiT2UnpB-BqYkCntnr7"/>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-surface rounded-full"></div>
+</div>
+<div>
+<p class="text-sm font-semibold">Alex Rivera</p>
+<p class="text-xs text-on-surface-variant">Reviewing Logic Flow...</p>
+</div>
+</div>
+<div class="flex items-center gap-3 p-2 group cursor-pointer">
+<div class="relative">
+<img alt="Avatar" class="w-10 h-10 rounded-full object-cover" data-alt="Portrait of a creative professional woman with vibrant lighting and a bokeh tech background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuyEmlosy9Ox5DaoPfrpL-IKNOiPnmrtv2k9ynmYJxsxPVTXKoghBKYdjLTzZEGapyGUaD7t5DbE5eFIWDKWIkctVQpxBFyPrq-63HtSZzpeCeMcQXJf4NUPU2WwTgdxwQQk-PzHgux_EB-1cu-lYHKD_eyL1s3APTvRAZJL1_N2CxUEcFU-5h7CcTN_qpPCmBv64b1lVu1ux6YHiwLapxmCpVy3IRMf6Jh_Goi3vZRgdupFceBa1SndnaHGWRM-5SUNbm-OnP3D4A"/>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-surface rounded-full"></div>
+</div>
+<div>
+<p class="text-sm font-semibold">Sarah Chen</p>
+<p class="text-xs text-on-surface-variant">Active in #design-flow</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Middle Column: Ultra-Clean Chat Interface -->
+<div class="col-span-6 bg-surface flex flex-col relative">
+<!-- Chat Header -->
+<header class="h-20 border-b border-surface-container px-8 flex items-center justify-between bg-surface/80 backdrop-blur-md">
+<div>
+<h2 class="font-headline font-bold text-xl tracking-tight text-on-surface"># engineering-sync</h2>
+<p class="text-xs text-on-surface-variant flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> 12 Nodes Online | Daily Standup Flow
+                    </p>
+</div>
+<div class="flex gap-2">
+<button class="p-2 rounded-full hover:bg-surface-container-high transition-all text-on-surface-variant">
+<span class="material-symbols-outlined">call</span>
+</button>
+<button class="p-2 rounded-full hover:bg-surface-container-high transition-all text-on-surface-variant">
+<span class="material-symbols-outlined">videocam</span>
+</button>
+</div>
+</header>
+<!-- Messages Area -->
+<div class="flex-1 overflow-y-auto p-8 space-y-8">
+<!-- System Synapse Line -->
+<div class="flex items-center justify-center gap-4 py-4">
+<div class="h-px flex-1 bg-gradient-to-r from-transparent via-outline-variant to-transparent opacity-20"></div>
+<span class="font-label text-[10px] uppercase tracking-widest text-outline-variant">System Flow Initialized</span>
+<div class="h-px flex-1 bg-gradient-to-r from-outline-variant via-outline-variant to-transparent opacity-20"></div>
+</div>
+<!-- Chat Bubble (Other) -->
+<div class="flex items-start gap-4 max-w-[85%]">
+<img alt="Avatar" class="w-10 h-10 rounded-full object-cover" data-alt="Portrait of a young tech innovator in a minimalist studio setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAukY3D2pl8UtX5TxvnHpxWhbHnCUQGBgqzxCJwF0lRj71trrcUbiruh6uOevTAFZzLSoU-n3uYgc6gqozTF5JAOtgXwgxY52qtxjMuYawXP6QMCTrCEZd0xe_DRhF5yZeO7T_MGpoifxZp6bHrCKnVHnaQtqVi2t8QH3ofnV10_WPnSYtX2NzqknM786sshTCTn6kepQkEOYztat_F9f_GpIZ6llM9z-JX9WzpNzZUMPw9pwHVZjCAykoZUmJ_l1Y5mUw6voO4OpsA"/>
+<div class="space-y-2">
+<p class="text-xs font-label font-bold text-zinc-500 px-1">ALEX RIVERA <span class="font-normal text-zinc-400 ml-2">10:42 AM</span></p>
+<div class="p-4 rounded-xl rounded-tl-none bg-white neural-glow-cyan text-sm leading-relaxed text-on-surface">
+                            Just pushed the latest updates to the Neural Path rendering engine. We need to verify the latency on the hub clusters.
+                        </div>
+</div>
+</div>
+<!-- Jira Widget Integration -->
+<div class="ml-14 max-w-[400px]">
+<div class="bg-white/80 rounded-xl p-5 neural-glow-purple border-l-4 border-secondary/50">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-sm">confirmation_number</span>
+<span class="font-label font-bold text-[10px] text-secondary uppercase tracking-wider">Jira-TXTA-492</span>
+</div>
+<span class="bg-secondary-container text-on-secondary-container text-[10px] px-2 py-0.5 rounded-full font-bold">IN PROGRESS</span>
+</div>
+<h4 class="font-headline font-bold text-sm mb-2">Neural Hub Latency Optimization</h4>
+<p class="text-xs text-on-surface-variant mb-4">Refactor the core synaptic mapping logic to reduce node traversal time by 15%.</p>
+<div class="flex items-center gap-4 border-t border-surface-container pt-4">
+<div class="flex -space-x-2">
+<img alt="Assignee" class="w-6 h-6 rounded-full border-2 border-white object-cover" data-alt="Small round portrait of female designer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2qicuXwAERdGWhRPtfe038h8s0vbMVrf3xvU5UiX7C8b4Kkgy7nCVJjAD_DM1j3yQvDYUaMib66B4ONQKTbbUHxnYldIQvym7MNf-OmDJ2VNfXjlCOow9n06akia6TUsHtRFdjkAW5KfGntkoEsjgLwpAyooJW-ZVRWD_d7x0NM2WObBEyAbAZF2LefZg0vG5tDOhxdyum12pMBZ0-1PVmXYbio7FjVn-6yInCpAkJwg3FRZF0vAP2w7PGQB7GWQnWYo-dLi8d3Wz"/>
+<div class="w-6 h-6 rounded-full border-2 border-white bg-surface-container flex items-center justify-center text-[10px] font-bold">+3</div>
+</div>
+<div class="ml-auto flex items-center gap-2">
+<span class="material-symbols-outlined text-xs text-secondary-dim" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="text-[10px] font-bold text-secondary-dim">NEURAL PRIORITY</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Chat Bubble (User) -->
+<div class="flex items-start gap-4 max-w-[85%] ml-auto flex-row-reverse">
+<img alt="Avatar" class="w-10 h-10 rounded-full object-cover" data-alt="Professional profile of a technology expert" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIFbB0oF4XUR-Awoi5820q_dT6TDNgGoI7WN5YLfQE4Et19M4wAXohU1JVElPe5aMOq2LG-DiulSXnyF-Gs3J9Mc89WSyNfGMgKfsSo2wd0fMNA1QLpe2OTx1DR_SBWUMfs6ymBA_Kes2Hx6pEi5nYzdzDh3Jqrmg1VmYTX_GOkzFiQKXHtAgYS22YpEfktQ5IXp9-TIfe2_4-54rn5rwSMGY111BZR_H6lrcwPRP6S2mXD9mS8o1g9OUTxxnl7YGodJmIbHkDc4Be"/>
+<div class="space-y-2 text-right">
+<p class="text-xs font-label font-bold text-zinc-500 px-1">YOU <span class="font-normal text-zinc-400 mr-2">10:45 AM</span></p>
+<div class="p-4 rounded-xl rounded-tr-none bg-primary text-white neural-glow-cyan text-sm leading-relaxed shadow-lg">
+                            Copy that, Alex. I'm opening the Neural Inspector now to monitor the sync signals. Looks like cluster B-12 is spiking.
+                        </div>
+</div>
+</div>
+</div>
+<!-- Message Input -->
+<div class="p-8 bg-gradient-to-t from-surface via-surface to-transparent">
+<div class="relative bg-white rounded-full p-2 neural-glow-cyan flex items-center gap-2 pr-4 shadow-xl">
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined">add</span>
+</button>
+<input class="flex-1 bg-transparent border-none focus:ring-0 text-sm font-body" placeholder="Type a message or trigger a flow..." type="text"/>
+<div class="flex items-center gap-2">
+<button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:text-secondary transition-all">
+<span class="material-symbols-outlined">mood</span>
+</button>
+<button class="px-6 py-2 bg-gradient-to-tr from-primary to-primary-container text-white rounded-full text-xs font-bold shadow-lg hover:scale-105 transition-all">
+                            SEND
+                        </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Neural Inspector -->
+<div class="col-span-3 bg-surface-container-lowest/80 glass-panel border-l border-surface-container-low overflow-y-auto p-8">
+<div class="flex items-center justify-between mb-8">
+<h3 class="font-headline font-extrabold text-lg tracking-tight uppercase">Neural Inspector</h3>
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">insights</span>
+</div>
+<div class="space-y-8">
+<!-- Contextual Detail Section -->
+<section>
+<div class="mb-4">
+<label class="font-label text-[10px] uppercase tracking-widest text-zinc-400">Target Context</label>
+<h4 class="font-headline font-bold text-on-surface mt-1">Cluster B-12 Analysis</h4>
+</div>
+<div class="bg-surface p-4 rounded-xl space-y-4">
+<div class="flex items-center justify-between">
+<span class="text-xs text-on-surface-variant">Sync Strength</span>
+<span class="text-xs font-bold text-primary">94.2%</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-gradient-to-r from-primary to-primary-container h-full w-[94.2%]"></div>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-xs text-on-surface-variant">Signal Latency</span>
+<span class="text-xs font-bold text-error">240ms</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-error h-full w-[70%]"></div>
+</div>
+</div>
+</section>
+<!-- Knowledge Graph Placeholder -->
+<section>
+<label class="font-label text-[10px] uppercase tracking-widest text-zinc-400 mb-4 block">Synapse Graph</label>
+<div class="aspect-square rounded-xl bg-surface-container-low relative overflow-hidden flex items-center justify-center">
+<!-- Abstract "Neural" UI Decoration -->
+<div class="absolute inset-0 opacity-20">
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 border border-primary rounded-full animate-ping"></div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 border border-secondary rounded-full"></div>
+</div>
+<div class="z-10 text-center">
+<span class="material-symbols-outlined text-primary text-4xl mb-2" style="font-variation-settings: 'FILL' 0;">share</span>
+<p class="text-[10px] font-bold text-on-surface-variant px-4">Interactive Node Map Loading...</p>
+</div>
+</div>
+</section>
+<!-- Action Panel -->
+<section class="space-y-3">
+<label class="font-label text-[10px] uppercase tracking-widest text-zinc-400 block">System Actions</label>
+<button class="w-full py-3 rounded-xl bg-white neural-glow-cyan text-primary text-xs font-bold hover:bg-primary hover:text-white transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">bolt</span>
+                        OPTIMIZE CLUSTER
+                    </button>
+<button class="w-full py-3 rounded-xl bg-white border border-outline-variant/10 text-on-surface-variant text-xs font-bold hover:bg-surface-container-high transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">history</span>
+                        SIGNAL HISTORY
+                    </button>
+</section>
+</div>
+</div>
+</main>
+<!-- Floating Action Trigger (FAB) - Suppression Logic applied where necessary -->
+<!-- FAB only on main hub screens as per protocol -->
+<div class="fixed bottom-8 right-8 z-50">
+<button class="w-14 h-14 bg-gradient-to-tr from-secondary to-secondary-fixed text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform neural-glow-purple">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</button>
+</div>
+</body></html>

@@ -53,23 +53,108 @@ doctor_id: 'mock-doc'
 const { id } = await fetch('/api/auth/me').then(r => r.json());
 ```
 
-### 4. Imports date-fns — named imports uniquement
+### 4. Routes dynamiques — `params` est une Promise (Next.js 16)
+```tsx
+// ❌ ANCIENNE syntaxe (Next.js 14/15) — CASSÉE en Next.js 16
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+  const { id } = params; // ← erreur silencieuse
+}
+
+// ✅ CORRECT Next.js 16 — params est une Promise
+export async function GET(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params; // ← await obligatoire
+}
+```
+**Règle :** Toute nouvelle route dynamique `[id]` doit utiliser `params: Promise<{ id: string }>` conformément au standard Next.js 16.
+
+### 5. Imports date-fns — named imports uniquement
 ```tsx
 // ❌ CASSÉ sur date-fns v4
 import format from 'date-fns/format'
 
 // ✅ CORRECT
-import { format, parse, startOfWeek, getDay } from 'date-fns';
+import { format } from 'date-fns';
 import { fr } from 'date-fns/locale/fr';
 ```
 
-### 5. Middleware à la racine (pas dans src/)
+### 6. Prisma generate après tout reset
+```bash
+# ❌ Oublier prisma generate → import cassé → crash HTML au lieu de JSON
+npx prisma migrate reset --force && npx prisma db seed
+
+# ✅ CORRECT
+npx prisma migrate reset --force && npx prisma generate && npx prisma db push && npx prisma db seed
+```
+**Désormais automatisé** via `postinstall` et `build` dans `package.json`.
+
+### 7. Import Prisma Client — depuis le dossier généré
+```ts
+// ❌ Ancienne façon (avant output custom)
+import { PrismaClient } from '@prisma/client';
+
+// ✅ Depuis la session Cursor (output = "../src/generated/prisma")
+import { PrismaClient } from '@/generated/prisma/client';
+```
+
+### 8. Middleware à la racine (pas dans src/)
 ```
 Nezha/
   middleware.ts  ← ✅ ICI (Next.js 16 le cherche à la racine)
   src/
     middleware.ts  ← ❌ ignoré par Next.js 16
 ```
+
+### 9. Formulaires — react-hook-form + Zod (Standard absolu)
+```tsx
+// ❌ INTERDIT — formulaire natif non validé
+<form onSubmit={handleSubmit}>
+  <input required value={formData.nom} />
+</form>
+
+// ✅ STANDARD — toujours react-hook-form + zod
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+
+const schema = z.object({ nom: z.string().min(2) });
+const form = useForm({ resolver: zodResolver(schema) });
+```
+**Règle :** Tout formulaire de saisie (Patient, RDV, Utilisateur) doit utiliser
+`react-hook-form` + `zod` pour la validation client. Cela garantit :
+- Messages d'erreur en français dès la saisie
+- Pas de soumission en cas de données invalides
+- Typage TypeScript complet via `z.infer<typeof schema>`
+
+### 10. Champs numériques — toujours afficher l'unité
+```tsx
+// ❌ Ambiguë — l'utilisateur ne sait pas si c'est cm ou mm
+<Input type="number" placeholder="175" />
+
+// ✅ CORRECT — suffix visuel avec l'unité
+<div className="relative">
+  <Input type="number" placeholder="175" className="pr-10" />
+  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400">cm</span>
+</div>
+```
+**Règle :** Les champs numériques (Taille, Poids, Doses, etc.) doivent TOUJOURS
+afficher leur unité (cm, kg, mg, mmHg…) pour éviter les erreurs de saisie médicale.
+
+### 11. Parsing des Données Complexes (API)
+```ts
+// ❌ Parsing manuel risqué (peut crasher sur des chaînes vides)
+const taille = Number(req.body.taille); 
+const sexe = req.body.sexe as 'MASCULIN' | 'FEMININ';
+
+// ✅ STANDARD — Helper de parsing sécurisé
+import { parseOptionalFloat, parseSexe } from '@/lib/patient-fields';
+
+const taille = parseOptionalFloat(req.body.taille);
+const sexe = parseSexe(req.body.sexe);
+```
+**Règle :** Utiliser systématiquement `src/lib/patient-fields.ts` pour parser les entrées utilisateur complexes (Sexe, Float) dans les routes API. Le modèle Patient utilise désormais des Enums explicites pour le sexe (`MASCULIN`, `FEMININ`).
 
 ---
 
@@ -151,4 +236,17 @@ npm run dev          # Port 3001
 npx prisma migrate reset --force && npx prisma db push && npx prisma db seed
 rm -rf .next         # Purger le cache Turbopack
 lsof -ti:3001 | xargs kill -9  # Forcer l'arrêt du serveur
+```
+
+
+# sql base
+```
+#CREATE DATABASE nezha_db;
+#CREATE USER nezha_user WITH ENCRYPTED PASSWORD 'Nezha1991!';
+#GRANT ALL PRIVILEGES ON DATABASE nezha_db TO nezha_user;
+#\q
+#  GNU nano 6.2                                                           /var/www/nezha/Nezha/.env *                                                                  
+/#DATABASE_URL="postgresql://#nezha_user:Nezha1991!@localhost:5432/nezha_db"
+#JWT_SECRET="Texta@#!#2026solutions"
+#LICENSE_JWT_SECRET="Texta@#!#2026solutionsNezha1991!"#/
 ```

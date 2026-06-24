@@ -8,12 +8,25 @@
 ### 1. `Unexpected token '<', "<!DOCTYPE "... is not valid JSON`
 **Symptôme :** Le `fetch()` côté client reçoit du HTML au lieu de JSON.
 **Causes possibles (par ordre de fréquence) :**
-1. **ID fictif en base** : `doctor_id: 'mock-doc'` → FK violation → Next.js retourne sa page d'erreur HTML
-2. Cookie expiré/absent → middleware redirige vers `/login` en HTML → le fetch reçoit une 302 en HTML
-3. Route API inexistante → 404 HTML
-4. Erreur serveur non catchée dans une route API
+1. **`npx prisma generate` oublié après un reset** → `PrismaClient` non initialisé → crash Node.js → Next.js retourne une page d'erreur HTML 500
+2. **ID fictif en base** : `doctor_id: 'mock-doc'` → FK violation → Next.js retourne sa page d'erreur HTML
+3. Cookie expiré/absent → middleware redirige vers `/login` en HTML → le fetch reçoit une 302 en HTML
+4. Route API inexistante → 404 HTML
+5. Erreur serveur non catchée dans une route API
 
-**Solution générique :** Toujours vérifier `res.ok` avant `res.json()` et logger `res.status`.
+**Solution systématique après tout `migrate reset` :**
+```bash
+npx prisma generate  # ← NE JAMAIS OUBLIER
+npx prisma db push
+npx prisma db seed
+```
+**Guard défensif dans le login (bonne pratique) :**
+```ts
+const ct = res.headers.get('content-type') ?? '';
+if (!ct.includes('application/json')) {
+  throw new Error('Réponse invalide — exécutez `npx prisma generate`');
+}
+```
 
 ---
 

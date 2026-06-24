@@ -1,39 +1,44 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { verifyPassword, signJwt } from '@/lib/auth';
+import {
+  signJwt,
+  AUTH_SESSION_MAX_AGE_SEC,
+} from '@/lib/auth';
+import { authCookieSecure } from '@/lib/auth-cookie';
+import { authenticateCredentials } from '@/core/auth/authenticate-credentials';
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { email, password } = body;
 
-    // === VERSION REELLE CONNECTEE A PRISMA ===
-    
     if (!email || !password) {
       return NextResponse.json({ error: 'Email et mot de passe requis' }, { status: 400 });
     }
 
-    // Récupérer l'utilisateur
-    const user = await prisma.user.findUnique({
-      where: { email },
-    });
+    const emailNormalized =
+      typeof email === 'string' ? email.trim().toLowerCase() : '';
 
-    if (!user) {
-      return NextResponse.json({ error: 'Identifiants invalides' }, { status: 401 });
+    if (!emailNormalized) {
+      return NextResponse.json({ error: 'Email invalide' }, { status: 400 });
     }
 
-    // Vérifier mot de passe Hashé
-    const isValid = await verifyPassword(password, user.password_hash);
+    const result = await authenticateCredentials(emailNormalized, password);
 
-    if (!isValid) {
+    if (!result.ok) {
+      if (result.error === 'account_disabled') {
+        return NextResponse.json(
+          { error: 'Compte désactivé. Contactez un administrateur.' },
+          { status: 403 }
+        );
+      }
       return NextResponse.json({ error: 'Identifiants invalides' }, { status: 401 });
     }
 
     const payload = {
-      id: user.id,
-      email: user.email,
-      role: user.role,
-      nom: user.nom,
+      id: result.user.id,
+      email: result.user.email,
+      role: result.user.role,
+      nom: result.user.nom,
     };
 
     const token = await signJwt(payload);
@@ -48,8 +53,9 @@ export async function POST(request: Request) {
       value: token,
       httpOnly: true,
       path: '/',
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 60 * 60 * 24, // 1 jour
+      secure: authCookieSecure(),
+      sameSite: 'lax',
+      maxAge: AUTH_SESSION_MAX_AGE_SEC,
     });
 
     return response;

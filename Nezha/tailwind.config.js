@@ -50,6 +50,20 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        surface: "rgb(var(--clinical-surface-rgb) / <alpha-value>)",
+        container: {
+          low: "rgb(var(--clinical-container-low-rgb) / <alpha-value>)",
+          lowest: "rgb(var(--clinical-container-lowest-rgb) / <alpha-value>)",
+          high: "rgb(var(--clinical-container-high-rgb) / <alpha-value>)",
+        },
+        "on-surface": {
+          DEFAULT: "rgb(var(--clinical-on-surface-rgb) / <alpha-value>)",
+          variant: "rgb(var(--clinical-on-surface-variant-rgb) / <alpha-value>)",
+        },
+        "outline-variant": "rgb(var(--clinical-outline-variant-rgb) / <alpha-value>)",
+      },
+      boxShadow: {
+        medical: "0 10px 30px rgba(15, 23, 42, 0.05)",
       },
       borderRadius: {
         lg: "var(--radius)",
