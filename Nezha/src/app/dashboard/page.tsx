@@ -5,15 +5,15 @@ import { useSearchParams } from 'next/navigation';
 import { Home } from 'lucide-react';
 
 import { DailyOverview } from '@/components/dashboard/DailyOverview';
-import { PageHeader } from '@/components/ui/page-header';
+import { ClinicalHero } from '@/components/ui/clinical-hero';
 
 function DashboardHomeContent() {
   const searchParams = useSearchParams();
   const encaisser = searchParams.get('encaisser');
 
   return (
-    <div className="animate-fade-in space-y-8 pb-8">
-      <PageHeader
+    <div className="animate-fade-in pb-8">
+      <ClinicalHero
         icon={Home}
         eyebrow="Tableau de bord"
         title="Accueil"
@@ -29,7 +29,7 @@ export default function DashboardHome() {
   return (
     <Suspense
       fallback={
-        <div className="animate-fade-in space-y-8 pb-8">
+        <div className="animate-fade-in pb-8">
           <p className="text-sm text-slate-500">Chargement…</p>
         </div>
       }

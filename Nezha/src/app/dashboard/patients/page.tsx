@@ -22,7 +22,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { DataTableShell } from '@/components/ui/data-table-shell';
 import { EmptyState } from '@/components/ui/empty-state';
-import { PageHeader } from '@/components/ui/page-header';
+import { ClinicalHero } from '@/components/ui/clinical-hero';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -194,13 +194,18 @@ export default function PatientsPage() {
 
   return (
     <div className="animate-fade-in space-y-6">
-      <PageHeader
+      <ClinicalHero
         icon={User}
         eyebrow="Patients"
         title="Dossiers médicaux"
-        description="Gérez l'ensemble de votre base de dossiers patients."
+        description="Recherchez, créez et gérez les dossiers patients de votre cabinet."
         actions={
-          <Button type="button" className="gap-2" onClick={() => setIsModalOpen(true)}>
+          <Button
+            type="button"
+            size="lg"
+            className="gap-2 rounded-xl"
+            onClick={() => setIsModalOpen(true)}
+          >
             <Plus size={18} /> Nouveau patient
           </Button>
         }

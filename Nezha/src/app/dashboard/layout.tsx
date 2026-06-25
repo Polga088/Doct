@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import useSWR from 'swr';
-import { Menu } from 'lucide-react';
+import { Menu, Search } from 'lucide-react';
 
 import { ChatPanel } from '@/components/chat/ChatPanel';
 import { PaymentPendingListener } from '@/components/assistant/PaymentPendingListener';
@@ -11,6 +11,7 @@ import { NotificationBell } from '@/components/dashboard/NotificationBell';
 import { Sidebar } from '@/components/dashboard/Sidebar';
 import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 const fetcher = (url: string) =>
   fetch(url, { credentials: 'same-origin' }).then((r) => {
@@ -35,17 +36,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const staffBillingAlerts = roleUpper === 'ASSISTANT' || roleUpper === 'ADMIN';
 
   return (
-    <div className="clinical-shell flex min-h-screen">
-      {/* Sidebar desktop */}
-      <div className="sticky top-0 z-30 hidden h-[100dvh] shrink-0 flex-col p-3 lg:flex lg:w-[272px] xl:w-[288px]">
-        <div className="flex h-full flex-col overflow-hidden rounded-2xl shadow-medical-xl ring-1 ring-slate-900/10">
-          <Sidebar />
-        </div>
+    <div className="flex min-h-screen bg-[#F6F8FB]">
+      {/* Sidebar desktop — claire 272px */}
+      <div className="sticky top-0 z-30 hidden h-[100dvh] w-[272px] shrink-0 border-r border-[#E2E8F0] bg-white lg:flex">
+        <Sidebar />
       </div>
 
-      {/* Sidebar mobile */}
       <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
-        <SheetContent side="left" className="w-[min(300px,88vw)] border-0 p-0">
+        <SheetContent side="left" className="w-[min(288px,90vw)] border-[#E2E8F0] p-0">
           <SheetTitle className="sr-only">Navigation</SheetTitle>
           <Sidebar onNavigate={() => setMobileNavOpen(false)} />
         </SheetContent>
@@ -54,8 +52,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       {staffBillingAlerts ? <PaymentPendingListener /> : null}
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="clinical-topbar">
-          <div className="flex items-center gap-3">
+        <header className="sticky top-0 z-20 flex h-16 shrink-0 items-center justify-between gap-4 border-b border-[#E2E8F0] bg-white/90 px-4 backdrop-blur-md sm:px-6 lg:px-8">
+          <div className="flex min-w-0 flex-1 items-center gap-3">
             <Button
               type="button"
               variant="ghost"
@@ -64,37 +62,40 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               onClick={() => setMobileNavOpen(true)}
               aria-label="Ouvrir le menu"
             >
-              <Menu className="h-5 w-5" />
+              <Menu className="h-5 w-5 text-[#64748B]" />
             </Button>
-            <div className="hidden sm:block">
-              <p className="text-xs font-bold uppercase tracking-widest text-slate-400">
-                Nezha Medical
-              </p>
-              <p className="text-sm font-semibold text-slate-700">Espace professionnel</p>
+
+            <div className="relative hidden max-w-sm flex-1 md:block">
+              <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#94A3B8]" />
+              <Input
+                placeholder="Rechercher patient, RDV…"
+                className="h-10 rounded-xl border-[#E2E8F0] bg-[#F8FAFC] pl-10 text-sm"
+                aria-label="Recherche globale"
+              />
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <NotificationBell />
-            <div className="flex items-center gap-3 rounded-2xl bg-slate-50 py-1.5 pl-4 pr-1.5 ring-1 ring-slate-900/[0.05]">
+            <div className="flex items-center gap-2.5 rounded-xl border border-[#E2E8F0] bg-white py-1.5 pl-3 pr-1.5">
               <div className="hidden flex-col items-end leading-tight sm:flex">
-                <span className="text-sm font-semibold text-slate-800">{user?.nom}</span>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                <span className="max-w-[120px] truncate text-sm font-semibold text-[#172033]">
+                  {user?.nom}
+                </span>
+                <span className="text-[10px] font-semibold uppercase tracking-wide text-[#64748B]">
                   {user?.role}
                 </span>
               </div>
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-sm font-bold text-white shadow-medical-blue-sm">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#2563EB] text-sm font-bold text-white">
                 {(user?.nom ?? 'U').charAt(0).toUpperCase()}
               </div>
             </div>
           </div>
         </header>
 
-        <div className="clinical-content-well">
-          <div className="clinical-main-panel animate-fade-in">
-            {children}
-          </div>
-        </div>
+        <main className="flex-1 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+          <div className="mx-auto max-w-[1320px] animate-fade-in">{children}</div>
+        </main>
       </div>
 
       <ChatPanel />

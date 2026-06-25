@@ -1,23 +1,30 @@
 import Link from 'next/link';
-import { CalendarPlus, Headphones } from 'lucide-react';
+import {
+  CalendarPlus,
+  CreditCard,
+  Headphones,
+  UserPlus,
+} from 'lucide-react';
 
 import { QueueManager } from '@/components/assistant/QueueManager';
 import { RecentlyRegistered } from '@/components/dashboard/RecentlyRegistered';
-import { PageHeader } from '@/components/ui/page-header';
+import { ClinicalHero } from '@/components/ui/clinical-hero';
 import { DashboardSection } from '@/components/ui/dashboard-section';
+import { QuickActionCard } from '@/components/ui/quick-action-card';
+import { WorkflowCard } from '@/components/ui/workflow-card';
 import { Button } from '@/components/ui/button';
 
 export default function AssistantDashboard() {
   return (
-    <div className="animate-fade-in space-y-10 pb-8">
-      <PageHeader
+    <div className="animate-fade-in space-y-8 pb-8">
+      <ClinicalHero
         icon={Headphones}
         eyebrow="Accueil"
         title="Espace Accueil"
-        description="Gérez la file d'attente, les arrivées patients et les nouveaux rendez-vous."
+        description="File d'attente, arrivées patients, paiements et rendez-vous du jour."
         actions={
           <Link href="/dashboard/agenda">
-            <Button size="lg" className="gap-2">
+            <Button size="lg" className="gap-2 rounded-xl">
               <CalendarPlus className="h-4 w-4" />
               Nouveau RDV
             </Button>
@@ -25,32 +32,43 @@ export default function AssistantDashboard() {
         }
       />
 
-      <QueueManager />
+      <DashboardSection title="Actions rapides" bento>
+        <QuickActionCard
+          href="/dashboard/patients"
+          icon={UserPlus}
+          title="Enregistrer patient"
+          description="Créer un nouveau dossier"
+          accent="blue"
+        />
+        <QuickActionCard
+          href="/dashboard/agenda"
+          icon={CalendarPlus}
+          title="Créer rendez-vous"
+          description="Planifier un créneau"
+          accent="cyan"
+        />
+        <QuickActionCard
+          href="/dashboard/invoices"
+          icon={CreditCard}
+          title="Encaisser"
+          description="Paiements en attente"
+          accent="emerald"
+        />
+      </DashboardSection>
 
-      <DashboardSection
-        title="Actions rapides"
-        description="Raccourcis pour les tâches courantes de l'accueil"
+      <WorkflowCard
+        title="File d'attente"
+        description="Patients en attente de passage"
+        icon={Headphones}
+        flush
       >
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-          <div className="clinical-card clinical-card-hover flex flex-col items-center justify-center p-10 text-center">
-            <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-medical-blue">
-              <CalendarPlus className="h-8 w-8" strokeWidth={1.75} aria-hidden />
-            </div>
-            <h2 className="mb-2 text-xl font-bold tracking-tight text-slate-900">
-              Planifier un rendez-vous
-            </h2>
-            <p className="mb-8 max-w-xs text-sm leading-relaxed text-slate-500">
-              Accédez à l&apos;agenda pour une nouvelle prise de rendez-vous ou une urgence.
-            </p>
-            <Link href="/dashboard/agenda">
-              <Button size="lg" className="h-12 px-8">
-                Ouvrir l&apos;agenda
-              </Button>
-            </Link>
-          </div>
-
-          <RecentlyRegistered limit={8} />
+        <div className="p-6">
+          <QueueManager />
         </div>
+      </WorkflowCard>
+
+      <DashboardSection title="Arrivées récentes">
+        <RecentlyRegistered limit={8} />
       </DashboardSection>
     </div>
   );

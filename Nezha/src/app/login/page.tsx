@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import {
   Activity,
+  CalendarCheck,
   HeartPulse,
   Loader2,
   Lock,
@@ -17,6 +18,12 @@ import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+
+const HIGHLIGHTS = [
+  { icon: Stethoscope, label: 'Consultations', desc: 'Suivi en temps réel' },
+  { icon: Users, label: 'Dossiers patients', desc: 'Historique centralisé' },
+  { icon: CalendarCheck, label: 'Agenda médical', desc: 'RDV & file d\'attente' },
+];
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -43,10 +50,7 @@ export default function LoginPage() {
       }
 
       const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || 'Identifiants invalides');
-      }
+      if (!res.ok) throw new Error(data.error || 'Identifiants invalides');
 
       toast.success('Connexion réussie ! Redirection...');
 
@@ -69,187 +73,172 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="clinical-shell relative flex min-h-screen">
-      {/* Panneau latéral branding — desktop */}
-      <aside className="relative hidden w-[46%] max-w-xl flex-col justify-between overflow-hidden lg:flex xl:max-w-2xl">
-        <div className="absolute inset-0 clinical-gradient" />
-        <div
-          className="absolute inset-0 opacity-30"
-          style={{
-            backgroundImage:
-              'radial-gradient(circle at 20% 80%, rgba(255,255,255,0.15) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 40%)',
-          }}
-        />
-        <div
-          className="absolute inset-0 opacity-[0.12]"
-          style={{
-            backgroundImage:
-              'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
-            backgroundSize: '48px 48px',
-          }}
-        />
+    <div className="min-h-screen bg-[#F6F8FB]">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+        <div className="absolute -left-24 top-0 h-96 w-96 rounded-full bg-[#2563EB]/8 blur-3xl" />
+        <div className="absolute -right-24 bottom-0 h-96 w-96 rounded-full bg-[#06B6D4]/6 blur-3xl" />
+      </div>
 
-        <div className="relative z-10 flex flex-col gap-8 p-10 xl:p-14">
-          <div className="flex items-center gap-4">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 text-white shadow-medical-blue backdrop-blur-sm ring-1 ring-white/20">
-              <HeartPulse size={28} strokeWidth={2} aria-hidden />
-            </div>
-            <div>
-              <p className="text-xl font-bold tracking-tight text-white">Nezha Medical</p>
-              <p className="text-sm font-medium text-blue-100/80">Plateforme clinique premium</p>
-            </div>
-          </div>
+      <div className="relative z-10 flex min-h-screen items-center justify-center px-4 py-10 sm:px-8">
+        <div className="mx-auto w-full max-w-7xl">
+          <div
+            data-testid="login-split-grid"
+            className="grid grid-cols-1 overflow-hidden rounded-3xl border border-[#E2E8F0] bg-white shadow-[0_16px_48px_-12px_rgba(23,32,51,0.12)] lg:grid-cols-[1.05fr_0.95fr]"
+          >
+            {/* Panneau branding — clair */}
+            <aside className="relative hidden flex-col justify-between bg-gradient-to-br from-[#EFF6FF] via-[#F8FAFC] to-[#ECFEFF] p-10 lg:flex xl:p-12">
+              <div className="space-y-8">
+                <div className="flex items-center gap-3">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#2563EB] text-white shadow-[0_8px_24px_-4px_rgba(37,99,235,0.4)]">
+                    <HeartPulse className="h-6 w-6" strokeWidth={2} aria-hidden />
+                  </span>
+                  <div>
+                    <p className="text-xl font-bold text-[#172033]">Nezha Medical</p>
+                    <p className="text-sm text-[#64748B]">Plateforme clinique</p>
+                  </div>
+                </div>
 
-          <div className="space-y-4">
-            <h2 className="text-display-md text-white">
-              Gestion clinique
-              <br />
-              <span className="text-blue-200">précise &amp; sécurisée</span>
-            </h2>
-            <p className="max-w-sm text-base leading-relaxed text-blue-100/75">
-              Dossiers patients, agenda, consultations et facturation — un environnement
-              professionnel conçu pour les équipes médicales.
-            </p>
-          </div>
-
-          <div className="mt-4 grid gap-4">
-            {[
-              { icon: Stethoscope, label: 'Consultations en temps réel', desc: 'File d\'attente & statuts live' },
-              { icon: Users, label: 'Dossiers patients centralisés', desc: 'Historique clinique complet' },
-              { icon: Activity, label: 'Pilotage cabinet', desc: 'KPI, revenus & analytics' },
-            ].map(({ icon: Icon, label, desc }) => (
-              <div
-                key={label}
-                className="flex items-center gap-4 rounded-2xl bg-white/10 p-4 backdrop-blur-sm ring-1 ring-white/15"
-              >
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/15 text-white">
-                  <Icon className="h-5 w-5" strokeWidth={1.75} aria-hidden />
-                </span>
                 <div>
-                  <p className="text-sm font-semibold text-white">{label}</p>
-                  <p className="text-xs text-blue-100/65">{desc}</p>
+                  <h2 className="text-3xl font-bold leading-tight tracking-tight text-[#172033] xl:text-4xl">
+                    Votre espace de travail
+                    <span className="text-[#2563EB]"> clinique</span>
+                  </h2>
+                  <p className="mt-3 max-w-md text-base leading-relaxed text-[#64748B]">
+                    Patients, consultations, agenda et facturation — un environnement
+                    professionnel, clair et sécurisé pour votre équipe soignante.
+                  </p>
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
 
-        <p className="relative z-10 p-10 text-xs text-blue-200/50 xl:p-14">
-          © {new Date().getFullYear()} Nezha Medical — Données de santé protégées
-        </p>
-      </aside>
+                <div className="grid grid-cols-3 gap-3">
+                  {[
+                    { v: '2 400+', l: 'Dossiers' },
+                    { v: '99.9%', l: 'Uptime' },
+                    { v: '< 2s', l: 'Réponse' },
+                  ].map(({ v, l }) => (
+                    <div
+                      key={l}
+                      className="rounded-2xl border border-[#E2E8F0] bg-white/80 p-4 text-center"
+                    >
+                      <p className="text-xl font-bold text-[#2563EB]">{v}</p>
+                      <p className="text-[10px] font-semibold uppercase tracking-wider text-[#64748B]">
+                        {l}
+                      </p>
+                    </div>
+                  ))}
+                </div>
 
-      {/* Panneau formulaire */}
-      <main className="relative flex flex-1 flex-col items-center justify-center px-5 py-10 sm:px-8">
-        <div className="pointer-events-none absolute inset-0 overflow-hidden lg:hidden">
-          <div className="absolute -left-20 -top-20 h-72 w-72 rounded-full bg-blue-200/25 blur-3xl" />
-          <div className="absolute -bottom-20 -right-20 h-72 w-72 rounded-full bg-indigo-200/20 blur-3xl" />
-        </div>
-
-        <div className="fade-in-up z-10 w-full max-w-[440px]">
-          {/* Branding mobile */}
-          <div className="mb-8 flex flex-col items-center text-center lg:hidden">
-            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl clinical-gradient text-white shadow-medical-blue">
-              <HeartPulse size={30} strokeWidth={2} aria-hidden />
-            </div>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">Nezha Medical</h1>
-            <p className="mt-1 text-sm text-slate-500">Espace personnel sécurisé</p>
-          </div>
-
-          <div className="clinical-panel p-7 sm:p-9">
-            <div className="mb-7 hidden lg:block">
-              <h1 className="text-2xl font-bold tracking-tight text-slate-900">Connexion</h1>
-              <p className="mt-1.5 text-sm text-slate-500">
-                Accédez à votre espace professionnel
-              </p>
-            </div>
-
-            <form onSubmit={handleLogin} className="space-y-5">
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                  Adresse email
-                </Label>
-                <div className="relative">
-                  <Mail
-                    className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
-                    aria-hidden
-                  />
-                  <Input
-                    id="email"
-                    type="email"
-                    required
-                    autoComplete="email"
-                    placeholder="marie@clinique.com"
-                    className="clinical-input h-12 pl-11"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    disabled={loading}
-                  />
+                <div className="space-y-3">
+                  {HIGHLIGHTS.map(({ icon: Icon, label, desc }) => (
+                    <div
+                      key={label}
+                      className="flex items-center gap-3 rounded-xl border border-[#E2E8F0] bg-white/70 p-4"
+                    >
+                      <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#EFF6FF] text-[#2563EB]">
+                        <Icon className="h-5 w-5" strokeWidth={1.75} aria-hidden />
+                      </span>
+                      <div>
+                        <p className="text-sm font-semibold text-[#172033]">{label}</p>
+                        <p className="text-xs text-[#64748B]">{desc}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="password" className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                    Mot de passe
-                  </Label>
-                  <Link
-                    href="/forgot-password"
-                    className="text-xs font-semibold text-blue-600 transition-colors hover:text-blue-700 hover:underline"
-                  >
-                    Oublié ?
-                  </Link>
-                </div>
-                <div className="relative">
-                  <Lock
-                    className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
-                    aria-hidden
-                  />
-                  <Input
-                    id="password"
-                    type="password"
-                    required
-                    autoComplete="current-password"
-                    placeholder="••••••••"
-                    className="clinical-input h-12 pl-11"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    disabled={loading}
-                  />
-                </div>
+              <div className="mt-8 flex flex-wrap gap-2">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-[#D1FAE5] bg-[#ECFDF5] px-3 py-1 text-xs font-semibold text-[#10B981]">
+                  <ShieldCheck className="h-3.5 w-3.5" aria-hidden />
+                  Données sécurisées
+                </span>
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-[#E2E8F0] bg-white px-3 py-1 text-xs font-semibold text-[#64748B]">
+                  <Activity className="h-3.5 w-3.5" aria-hidden />
+                  Conforme RGPD
+                </span>
+              </div>
+            </aside>
+
+            {/* Formulaire */}
+            <main className="flex flex-col justify-center p-8 sm:p-10 xl:p-14">
+              <div className="mb-6 flex flex-col items-center text-center lg:hidden">
+                <span className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#2563EB] text-white">
+                  <HeartPulse className="h-6 w-6" aria-hidden />
+                </span>
+                <h1 className="text-xl font-bold text-[#172033]">Nezha Medical</h1>
               </div>
 
-              <Button
-                type="submit"
-                size="lg"
-                disabled={loading}
-                className="clinical-button h-12 w-full rounded-xl text-base"
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-                    Authentification…
-                  </>
-                ) : (
-                  'Se connecter'
-                )}
-              </Button>
-            </form>
+              <div className="mx-auto w-full max-w-md">
+                <div className="mb-6 hidden lg:block">
+                  <h1 className="text-2xl font-bold text-[#172033]">Connexion</h1>
+                  <p className="mt-1 text-sm text-[#64748B]">
+                    Accédez à votre espace professionnel
+                  </p>
+                </div>
 
-            <div className="mt-6 flex items-start gap-3 rounded-xl bg-slate-50 p-4 ring-1 ring-slate-900/[0.04]">
-              <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" aria-hidden />
-              <p className="text-xs leading-relaxed text-slate-500">
-                Accès réservé au personnel habilité. Les comptes sont créés par
-                l&apos;administration du cabinet — aucune inscription publique.
-              </p>
-            </div>
+                <form onSubmit={handleLogin} className="space-y-5" data-testid="login-form">
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Adresse email</Label>
+                    <div className="relative">
+                      <Mail className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#94A3B8]" />
+                      <Input
+                        id="email"
+                        data-testid="login-email"
+                        type="email"
+                        required
+                        autoComplete="email"
+                        placeholder="marie@clinique.com"
+                        className="h-12 rounded-xl pl-11"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        disabled={loading}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="password">Mot de passe</Label>
+                      <Link href="/forgot-password" className="text-xs font-semibold text-[#2563EB] hover:underline">
+                        Oublié ?
+                      </Link>
+                    </div>
+                    <div className="relative">
+                      <Lock className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#94A3B8]" />
+                      <Input
+                        id="password"
+                        data-testid="login-password"
+                        type="password"
+                        required
+                        autoComplete="current-password"
+                        placeholder="••••••••"
+                        className="h-12 rounded-xl pl-11"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        disabled={loading}
+                      />
+                    </div>
+                  </div>
+
+                  <Button type="submit" size="lg" disabled={loading} className="h-12 w-full rounded-xl">
+                    {loading ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                        Authentification…
+                      </>
+                    ) : (
+                      'Se connecter'
+                    )}
+                  </Button>
+                </form>
+
+                <p className="mt-6 flex items-start gap-2 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-4 text-xs leading-relaxed text-[#64748B]">
+                  <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-[#10B981]" aria-hidden />
+                  Accès réservé au personnel habilité. Comptes créés par l&apos;administration du cabinet.
+                </p>
+              </div>
+            </main>
           </div>
-
-          <p className="mt-6 text-center text-xs text-slate-400 lg:hidden">
-            © {new Date().getFullYear()} Nezha Medical — Plateforme clinique sécurisée
-          </p>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

@@ -3,38 +3,38 @@ import { TrendingDown, TrendingUp, type LucideIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
-type Accent = 'blue' | 'emerald' | 'amber' | 'violet' | 'rose' | 'slate';
+type Accent = 'blue' | 'emerald' | 'amber' | 'cyan' | 'rose' | 'slate';
 
-const ACCENT_STYLES: Record<Accent, { icon: string; value: string; glow: string }> = {
+const ACCENT: Record<Accent, { icon: string; value: string; bar: string }> = {
   blue: {
-    icon: 'bg-blue-500/10 text-blue-600 ring-blue-500/20',
-    value: 'text-blue-600',
-    glow: 'from-blue-500/5 to-transparent',
+    icon: 'bg-[#EFF6FF] text-[#2563EB]',
+    value: 'text-[#2563EB]',
+    bar: 'bg-[#2563EB]',
   },
   emerald: {
-    icon: 'bg-emerald-500/10 text-emerald-600 ring-emerald-500/20',
-    value: 'text-emerald-600',
-    glow: 'from-emerald-500/5 to-transparent',
+    icon: 'bg-[#ECFDF5] text-[#10B981]',
+    value: 'text-[#10B981]',
+    bar: 'bg-[#10B981]',
   },
   amber: {
-    icon: 'bg-amber-500/10 text-amber-600 ring-amber-500/20',
-    value: 'text-amber-600',
-    glow: 'from-amber-500/5 to-transparent',
+    icon: 'bg-[#FFFBEB] text-[#F59E0B]',
+    value: 'text-[#F59E0B]',
+    bar: 'bg-[#F59E0B]',
   },
-  violet: {
-    icon: 'bg-violet-500/10 text-violet-600 ring-violet-500/20',
-    value: 'text-violet-600',
-    glow: 'from-violet-500/5 to-transparent',
+  cyan: {
+    icon: 'bg-[#ECFEFF] text-[#06B6D4]',
+    value: 'text-[#06B6D4]',
+    bar: 'bg-[#06B6D4]',
   },
   rose: {
-    icon: 'bg-rose-500/10 text-rose-600 ring-rose-500/20',
-    value: 'text-rose-600',
-    glow: 'from-rose-500/5 to-transparent',
+    icon: 'bg-[#FEF2F2] text-[#EF4444]',
+    value: 'text-[#EF4444]',
+    bar: 'bg-[#EF4444]',
   },
   slate: {
-    icon: 'bg-slate-500/10 text-slate-500 ring-slate-500/15',
-    value: 'text-slate-700',
-    glow: 'from-slate-500/5 to-transparent',
+    icon: 'bg-[#F1F5F9] text-[#64748B]',
+    value: 'text-[#172033]',
+    bar: 'bg-[#94A3B8]',
   },
 };
 
@@ -57,60 +57,50 @@ export function MetricCard({
   className,
   ...props
 }: MetricCardProps) {
-  const styles = ACCENT_STYLES[accent];
+  const s = ACCENT[accent];
   const hasTrend = typeof trend === 'number' && Number.isFinite(trend);
   const up = hasTrend && (trend as number) >= 0;
 
   return (
     <div
       className={cn(
-        'group relative overflow-hidden rounded-2xl bg-white p-5 shadow-medical ring-1 ring-slate-900/[0.04] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-medical-lg',
+        'relative overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white p-6 shadow-[0_2px_12px_-2px_rgba(23,32,51,0.06)] transition-shadow hover:shadow-[0_8px_24px_-8px_rgba(23,32,51,0.1)]',
         className
       )}
       {...props}
     >
-      <div
-        className={cn(
-          'pointer-events-none absolute -right-4 -top-4 h-24 w-24 rounded-full bg-gradient-to-br opacity-60',
-          styles.glow
-        )}
-      />
-      <div className="relative flex items-start justify-between gap-3">
+      <div className="flex items-start justify-between gap-3">
         {Icon ? (
-          <span
-            className={cn(
-              'inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ring-1',
-              styles.icon
-            )}
-          >
+          <span className={cn('inline-flex h-11 w-11 items-center justify-center rounded-xl', s.icon)}>
             <Icon className="h-5 w-5" strokeWidth={2} aria-hidden />
           </span>
         ) : (
           <span />
         )}
-        <p className="text-right text-[10px] font-bold uppercase tracking-[0.1em] text-slate-400">
+        <p className="text-right text-[10px] font-bold uppercase tracking-[0.1em] text-[#64748B]">
           {label}
         </p>
       </div>
 
-      <div className="relative mt-4 flex items-end gap-2">
-        <span className={cn('text-4xl font-bold tabular-nums tracking-tight', styles.value)}>
-          {value}
-        </span>
-        {hasTrend ? (
-          <span
-            className={cn(
-              'mb-1.5 inline-flex items-center gap-0.5 rounded-full px-2 py-0.5 text-xs font-bold',
-              up ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'
-            )}
-          >
-            {up ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
-            {Math.abs(trend as number)}%
-          </span>
-        ) : null}
-      </div>
+      <p className={cn('mt-4 text-4xl font-bold tabular-nums tracking-tight sm:text-5xl', s.value)}>
+        {value}
+      </p>
 
-      {hint ? <p className="relative mt-1.5 text-xs text-slate-400">{hint}</p> : null}
+      {hasTrend ? (
+        <span
+          className={cn(
+            'mt-2 inline-flex items-center gap-0.5 rounded-full px-2 py-0.5 text-xs font-semibold',
+            up ? 'bg-[#ECFDF5] text-[#10B981]' : 'bg-[#FEF2F2] text-[#EF4444]'
+          )}
+        >
+          {up ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
+          {Math.abs(trend as number)}%
+        </span>
+      ) : null}
+
+      {hint ? <p className="mt-2 text-xs text-[#64748B]">{hint}</p> : null}
+
+      <div className={cn('absolute bottom-0 left-0 right-0 h-1 opacity-80', s.bar)} />
     </div>
   );
 }
