@@ -12,12 +12,10 @@ export default function AdminDashboard() {
         icon={LayoutDashboard}
         eyebrow="Administration"
         title="Vue d'ensemble"
-        description="Pilotage du jour — rendez-vous et file d'attente."
+        description="Pilotage du cabinet — rendez-vous, file d'attente et encaissements du jour."
       />
 
-      <div className="max-w-5xl">
-        <DailyOverview />
-      </div>
+      <DailyOverview />
     </div>
   );
 }
